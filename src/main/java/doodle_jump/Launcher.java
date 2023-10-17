@@ -1,4 +1,6 @@
-package src.main.java.doodle_jump;
+package doodle_jump;
+
+import doodle_jump.Game;
 
 import javax.swing.SwingUtilities;
 
@@ -8,8 +10,8 @@ public class Launcher {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MainWindow main = new MainWindow();
-                main.show();
+                Game game = new Game();
+                game.play();
             }
         });
     }

@@ -1,18 +1,18 @@
-package src.main.java.doodle_jump;
+package doodle_jump;
 
 import javax.swing.JFrame;
+import java.awt.event.WindowAdapter;
 
-public class MainWindow {
-    private JFrame window;
+import doodle_jump.Game;
 
-    public MainWindow() {
-        window = new JFrame();
-        
+public class MainWindow extends JFrame {
 
+    public MainWindow(int width, int height) {
+        super();
+        this.setSize(width, height);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
-
-    public void show() {
-
-    }
-    
 }
