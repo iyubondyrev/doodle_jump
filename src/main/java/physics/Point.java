@@ -11,6 +11,11 @@ public class Point<T extends Number> {
 
     public Point() {}
 
+    /**
+     * Set point coordinates.
+     * @param x x-coordinate.
+     * @param y y-coordinate.
+     */
     public void setLocation(T x, T y) {
         this.setX(x);
         this.setY(y);

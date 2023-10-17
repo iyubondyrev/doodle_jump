@@ -14,6 +14,9 @@ import doodle_jump.Doodle;
 import doodle_jump.PlatformCollection;
 import game_engine.AnimationPanel;
 
+/**
+ * Class represents game.
+ */
 public class Game extends AnimationPanel {
     private MainWindow window;
 
@@ -26,7 +29,10 @@ public class Game extends AnimationPanel {
 
     private static final Image BG_IMAGE = ImageUploader.upload("bg.png");
     private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
-    
+
+    /**
+     * Constructor.
+     */
     public Game() {
         super(BG_IMAGE);
         this.window = new MainWindow(WIDTH, HEIGHT);
@@ -43,16 +49,25 @@ public class Game extends AnimationPanel {
         };
     }
 
+    /**
+     * Show start scren.
+     */
     private void showStartScreen() {
 
     }
 
-    private void showGame() {
+    /**
+     * Play game.
+     */
+    private void playGame() {
         this.initGame();
         this.runAnimation();
     }
 
     @Override
+    /**
+     * Main action of game.
+     */
     protected void preAction() {
         // Gravity vector implies on doodle.
         this.doodle.addAcceleration(GRAVITY_VECTOR);
@@ -61,10 +76,17 @@ public class Game extends AnimationPanel {
     }
 
     @Override
+    /**
+     * Render game.
+     */
     protected void postAction() {
         this.window.validate();
     }
-
+    
+    /**
+     * Init game.
+     * Init all objects on panel and add them on panel.
+     */
     private void initGame() {
         this.doodle = new Doodle(100, 100);
         this.platforms = new PlatformCollection();
@@ -77,6 +99,9 @@ public class Game extends AnimationPanel {
         this.platforms.createPlatform();
     }
 
+    /**
+     * Show screen with results.
+     */
     private void showResultScreen() {
 
     }
@@ -87,7 +112,7 @@ public class Game extends AnimationPanel {
      */
     public void play() {
         this.showStartScreen();
-        this.showGame();
+        this.playGame();
         this.showResultScreen();
     }
 }

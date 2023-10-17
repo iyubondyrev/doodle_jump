@@ -8,6 +8,10 @@ import game_engine.GameObject;
 import game_engine.GameObjectCollection;
 import doodle_jump.Game;
 
+
+/**
+ * Class represents platform.
+ */
 class Platform extends GameObject{
     private static final Image IMAGE = ImageUploader.upload("platform.png");
 
@@ -17,9 +21,9 @@ class Platform extends GameObject{
 }
 
 /**
- * 
+ * Class represents platforms collection.
  */
-public class PlatformCollection extends GameObjectCollection<Platform>{
+public class PlatformCollection extends GameObjectCollection<Platform> {
 
     public PlatformCollection() {
         super(Game.WIDTH, Game.HEIGHT);

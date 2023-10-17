@@ -11,6 +11,7 @@ public class GamePanel extends JPanel {
     private Point<Integer> point;
 
     /**
+     * Constructor.
      * @param x x-coordinate of top-left corner.
      * @param y y-coordinate of top-left corner.
      * @param image image.

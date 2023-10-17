@@ -7,7 +7,8 @@ import java.awt.Graphics;
 import game_engine.GameObject;
 
 /**
- * Class represents collection of gameObjects which conta
+ * Class represents collection of gameObjects which are contained on one Jpanel.
+ * GameObjects have the same class.
  */
 public class GameObjectCollection<T extends GameObject> extends JPanel {
     private ArrayList<T> list;
