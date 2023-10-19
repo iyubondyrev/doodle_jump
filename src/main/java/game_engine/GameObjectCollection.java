@@ -1,9 +1,12 @@
 package game_engine;
 
 import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
+import java.awt.Component;
 
 import game_engine.GameObject;
 
@@ -12,9 +15,7 @@ import game_engine.GameObject;
  * GameObjects have the same class.
  */
 public class GameObjectCollection<T extends GameObject> extends JPanel {
-    public ArrayList<T> list;
-    int width;
-    int height;
+    private ArrayList<T> list;
 
     /**
      * Constructor.
@@ -26,8 +27,6 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
         this.setOpaque(false);
         this.setLocation(0, 0);
         this.setSize(width, height);
-        this.width = width;
-        this.height = height;
 
         this.list = new ArrayList<T>();
     }
@@ -49,12 +48,16 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
      */
     public boolean removeObj(T obj) {
         boolean isRemoved = false;
+        Component[] componentList = this.getComponents();
 
-        if (this.list.remove(obj)) {
-            this.remove(obj);
-            isRemoved = true;
+        for (Component component: componentList) {
+            if (component == obj) {
+                this.list.remove(obj);
+                this.remove(component);
 
-            this.update();
+                isRemoved = true;
+                this.update();
+            }
         }
 
         return isRemoved;
@@ -94,9 +97,9 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Remove all object from list.
+     * Remove all objects from list.
      */
-    public void clearObj() {
+    public void clearCollection() {
         this.removeAll();
         this.list.clear();
         this.update();
@@ -110,11 +113,11 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
         this.repaint();
     }
 
-    public int getWidth() {
-        return this.width;
-    }
-
-    public int getHeight() {
-        return this.height;
+    /**
+     * Get object collection.
+     * @return object collection.
+     */
+    public ArrayList<T> getCollection() {
+        return this.list;
     }
 }

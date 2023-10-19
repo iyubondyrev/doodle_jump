@@ -84,7 +84,7 @@ public class Game extends AnimationPanel {
      */
     protected void postAction() {
         if (this.flag) {
-            moveStageUp();
+            this.platforms.moveStageUp();
             System.out.println("Flag is true");
             this.flag = false;
         }
@@ -120,18 +120,6 @@ public class Game extends AnimationPanel {
         this.showStartScreen();
         this.playGame();
         this.showResultScreen();
-    }
-
-    private void moveStageUp() {
-        int offset = UP_LIMIT;
-        for (Platform p : this.platforms.list) {
-            p.setCoordinates(p.getCoordinateX(), p.getCoordinateY() + offset);
-            if (p.getCoordinateX() > this.getHeight()) {
-                p.setCoordinates(
-                    Math.random() * (getWidth() - p.getWidth()),
-                    (Math.random() * 50) - 60);
-            }
-        }
     }
 
     private class DoodleGameKeyListener extends KeyAdapter {

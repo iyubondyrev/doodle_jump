@@ -35,9 +35,21 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
             int x = (int) (Math.random() * (getWidth() - p.getWidth()));
             int y = i * ((int) (Math.random() * 50) + 70);
             p.setCoordinates(x, y);
-            this.list.add(p);
-            this.add(p);
+            this.addObj(p);
         }
 
+    }
+
+    public void moveStageUp() {
+        int offset = Game.UP_LIMIT;
+        
+        for (Platform p : this.getCollection()) {
+            p.setCoordinates(p.getCoordinateX(), p.getCoordinateY() + offset);
+            if (p.getCoordinateY() > (double) this.getHeight()) {
+                p.setCoordinates(
+                    Math.random() * (getWidth() - p.getWidth()),
+                    (Math.random() * 50) - 60);
+            }
+        }
     }
 }
