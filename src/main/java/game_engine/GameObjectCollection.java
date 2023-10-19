@@ -3,6 +3,7 @@ package game_engine;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 
 import game_engine.GameObject;
 
@@ -11,7 +12,9 @@ import game_engine.GameObject;
  * GameObjects have the same class.
  */
 public class GameObjectCollection<T extends GameObject> extends JPanel {
-    private ArrayList<T> list;
+    public ArrayList<T> list;
+    int width;
+    int height;
 
     /**
      * Constructor.
@@ -23,6 +26,8 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
         this.setOpaque(false);
         this.setLocation(0, 0);
         this.setSize(width, height);
+        this.width = width;
+        this.height = height;
 
         this.list = new ArrayList<T>();
     }
@@ -103,5 +108,13 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     private void update() {
         this.revalidate();
         this.repaint();
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }

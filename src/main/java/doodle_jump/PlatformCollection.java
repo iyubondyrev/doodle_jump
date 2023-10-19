@@ -8,20 +8,20 @@ import game_engine.GameObject;
 import game_engine.GameObjectCollection;
 import doodle_jump.Game;
 
-
-/**
- * Class represents platform.
- */
-class Platform extends GameObject{
+class Platform extends GameObject {
     private static final Image IMAGE = ImageUploader.upload("platform.png");
 
     public Platform(int x, int y) {
         super(x, y, IMAGE);
     }
+
+    public Platform() {
+        super(0, 0, IMAGE);
+    }
 }
 
 /**
- * Class represents platforms collection.
+ * 
  */
 public class PlatformCollection extends GameObjectCollection<Platform> {
 
@@ -29,13 +29,15 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
         super(Game.WIDTH, Game.HEIGHT);
     }
 
-    /**
-     * Example function to show how create platforms.
-     */
-    public void createPlatform() {
-        Platform platform1 = new Platform(300, 40);
-        Platform platform2 = new Platform(100, 400);
-        this.addObj(platform1);
-        this.addObj(platform2);
+    public void genNewPlatforms() {
+        for (int i = 0; i < 10; i++) {
+            Platform p = new Platform();
+            int x = (int) (Math.random() * (getWidth() - p.getWidth()));
+            int y = i * ((int) (Math.random() * 50) + 70);
+            p.setLocation(x, y);
+            this.list.add(p);
+            this.add(p);
+        }
+
     }
 }

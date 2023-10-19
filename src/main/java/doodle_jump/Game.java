@@ -3,7 +3,12 @@ package doodle_jump;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.JFrame;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -20,12 +25,17 @@ import game_engine.AnimationPanel;
 public class Game extends AnimationPanel {
     private MainWindow window;
 
+    private boolean flag = false;
+
+    private Graphics2D g;
+
     private int scores;
     private Doodle doodle;
     private PlatformCollection platforms;
 
     public static final int WIDTH = 500;
     public static final int HEIGHT = 800;
+    public static final int UP_LIMIT = 10;
 
     private static final Image BG_IMAGE = ImageUploader.upload("bg.png");
     private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
@@ -37,16 +47,9 @@ public class Game extends AnimationPanel {
         super(BG_IMAGE);
         this.window = new MainWindow(WIDTH, HEIGHT);
         this.window.add(this);
-        this.window.addWindowFocusListener(this.getWindowAdapter());
-    }
-
-    private WindowAdapter getWindowAdapter() {
-        return new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                runAnimation();
-            }
-        };
+        this.addKeyListener(new DoodleGameKeyListener());
+        this.setFocusable(true); // Make sure the panel is focusable
+        this.requestFocusInWindow(); // Request focus on the panel
     }
 
     /**
@@ -80,7 +83,11 @@ public class Game extends AnimationPanel {
      * Render game.
      */
     protected void postAction() {
-        this.window.validate();
+        if (this.flag) {
+            moveStageUp();
+            System.out.println("Flag is true");
+            this.flag = false;
+        }
     }
     
     /**
@@ -95,8 +102,7 @@ public class Game extends AnimationPanel {
         this.add(this.doodle);
         this.add(this.platforms);
 
-        // Example action: creating 2 platforms.
-        this.platforms.createPlatform();
+        this.platforms.genNewPlatforms();
     }
 
     /**
@@ -114,5 +120,28 @@ public class Game extends AnimationPanel {
         this.showStartScreen();
         this.playGame();
         this.showResultScreen();
+    }
+
+    private void moveStageUp() {
+        int offset = UP_LIMIT;
+        for (Platform p : this.platforms.list) {
+            p.setLocation(p.getX(), p.getY() + offset);
+            if (p.getY() > this.getHeight()) {
+                p.setLocation((int) (Math.random() * (getWidth() - p.getWidth())),
+                        ((int) (Math.random() * 50) - 60));
+            }
+        }
+    }
+
+    private class DoodleGameKeyListener extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            Game.this.requestFocusInWindow();
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) { // Check if the pressed key is the space bar
+                System.out.println("Space Pressed");
+                flag = true;
+            }
+        }
     }
 }
