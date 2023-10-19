@@ -15,8 +15,11 @@ public abstract class AnimationPanel extends GamePanel{
     private Thread thread;
     private boolean runAnimation;
 
+    private final int NANOSECONDS_PER_SECOND = 1000000000;
+    private final int MILLISECONDS_PER_SECOND = 1000000;
+
     private final int FPS = 60;
-    private final int TARGET_TIME = 1000000000 / FPS;
+    private final int TARGET_TIME = NANOSECONDS_PER_SECOND / FPS;
 
     public AnimationPanel(Image image) {
         super(image);
@@ -55,7 +58,7 @@ public abstract class AnimationPanel extends GamePanel{
                     long time = System.nanoTime() - startTime;
 
                     if (time < TARGET_TIME) {
-                        long sleepTime = (TARGET_TIME - time) / 1000000;
+                        long sleepTime = (TARGET_TIME - time) / MILLISECONDS_PER_SECOND;
                         sleep(sleepTime);
                     }
 

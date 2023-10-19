@@ -34,7 +34,7 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
             Platform p = new Platform();
             int x = (int) (Math.random() * (getWidth() - p.getWidth()));
             int y = i * ((int) (Math.random() * 50) + 70);
-            p.setLocation(x, y);
+            p.setCoordinates(x, y);
             this.list.add(p);
             this.add(p);
         }

@@ -8,7 +8,7 @@ import physics.Point;
 
 public class GamePanel extends JPanel {
     private Image image;
-    private Point<Integer> point;
+    private Point<Double> point;
 
     /**
      * Constructor.
@@ -22,7 +22,8 @@ public class GamePanel extends JPanel {
 
         this.image = image;
         this.setSize(this.image.getWidth(null), this.image.getHeight(null));
-        this.point = new Point<Integer>(x, y);
+        this.point = new Point<Double>();
+        this.setCoordinates(x, y);
     }
 
     public GamePanel(Image image) {
@@ -45,25 +46,29 @@ public class GamePanel extends JPanel {
         return this.image;
     }
 
-    @Override
-    public void setLocation(int x, int y) {
-        super.setLocation(x, y);
-        this.point.setLocation(x, y);
+    public void setCoordinates(double x, double y) {
+        this.setLocation((int) x, (int) y);
+        this.point.setCoordinates(x, y);
     }
 
-    public void setX(int x) {
-        this.setLocation(x, this.getY());
+    public void setCoordinates(int x, int y) {
+        this.setLocation(x, y);
+        this.point.setCoordinates((double) x, (double) y);
     }
 
-    public void setY(int y) {
-        this.setLocation(this.getX(), y);
+    public void setCoordinateX(double x) {
+        this.setCoordinates(x, this.point.getX());
     }
 
-    public int getX() {
+    public void setCoordinateY(double y) {
+        this.setCoordinates(this.point.getY(), y);
+    }
+
+    public double getCoordinateX() {
         return this.point.getX();
     }
 
-    public int getY() {
+    public double getCoordinateY() {
         return this.point.getY();
     }
 

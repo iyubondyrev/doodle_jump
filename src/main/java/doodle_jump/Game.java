@@ -125,10 +125,11 @@ public class Game extends AnimationPanel {
     private void moveStageUp() {
         int offset = UP_LIMIT;
         for (Platform p : this.platforms.list) {
-            p.setLocation(p.getX(), p.getY() + offset);
-            if (p.getY() > this.getHeight()) {
-                p.setLocation((int) (Math.random() * (getWidth() - p.getWidth())),
-                        ((int) (Math.random() * 50) - 60));
+            p.setCoordinates(p.getCoordinateX(), p.getCoordinateY() + offset);
+            if (p.getCoordinateX() > this.getHeight()) {
+                p.setCoordinates(
+                    Math.random() * (getWidth() - p.getWidth()),
+                    (Math.random() * 50) - 60);
             }
         }
     }

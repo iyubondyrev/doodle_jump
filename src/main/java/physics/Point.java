@@ -16,9 +16,9 @@ public class Point<T extends Number> {
      * @param x x-coordinate.
      * @param y y-coordinate.
      */
-    public void setLocation(T x, T y) {
-        this.setX(x);
-        this.setY(y);
+    public void setCoordinates(T x, T y) {
+        this.x = x;
+        this.y = y;
     }
 
     public void setX(T x) {

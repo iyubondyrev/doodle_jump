@@ -10,6 +10,8 @@ import java.awt.Image;
 public class GameObject extends GamePanel {
     private Vector speedVector;
 
+    private static final double FALLING_Y_SPEED_LIMIT = 0;
+
     /**
      * Constructor.
      * @param x x-coordinate of top-left corner.
@@ -27,6 +29,11 @@ public class GameObject extends GamePanel {
      */
     public Vector getSpeedVector() {
         return this.speedVector;
+    }
+
+
+    public boolean isFall() {
+        return this.speedVector.getY() > FALLING_Y_SPEED_LIMIT;
     }
 
     /**
@@ -59,8 +66,8 @@ public class GameObject extends GamePanel {
      * Object is moved with the direction and speed of speed vector.
      */
     public void move() {
-        int x = this.getX() + (int) this.speedVector.getX();
-        int y = this.getY() + (int) this.speedVector.getY();
-        this.setLocation(x, y);
+        this.setCoordinates(
+            this.getCoordinateX() + this.speedVector.getX(),
+            this.getCoordinateY() + this.speedVector.getY());
     }
 }
