@@ -31,8 +31,11 @@ public class GameObject extends GamePanel {
         return this.speedVector;
     }
 
-
-    public boolean isFall() {
+    /**
+     * Define if object falls.
+     * @return boolean (true - object is falling, false - not).
+     */
+    public boolean isFalling() {
         return this.speedVector.getY() > FALLING_Y_SPEED_LIMIT;
     }
 

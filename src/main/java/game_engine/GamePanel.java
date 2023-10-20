@@ -6,8 +6,9 @@ import java.awt.Image;
 
 import physics.Point;
 
+
 public class GamePanel extends JPanel {
-    private Image image;
+    protected Image image;
     private Point<Double> point;
 
     /**
@@ -53,7 +54,7 @@ public class GamePanel extends JPanel {
 
     /**
      * Set coordinates in floating-point format (double).
-     * JPanel.setLocation gets coordinates in integer format after casting.
+     * JPanel.setLocation gets coordinates in integer format after casting from double to int.
      * @param x x-coordinate of top-left corner.
      * @param y y-coordinate of top-left corner.
      */
@@ -74,19 +75,37 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Set x-coordinate.
+     * Set x-coordinate in floating-point format (double).
      * @param x x-coordinate of top-left corner.
      */
     public void setCoordinateX(double x) {
-        this.setCoordinates(x, this.point.getX());
+        this.setCoordinates(x, this.point.getY());
     }
 
     /**
-     * Set y-coordinates.
+     * Set x-coordinate in integer format (int).
+     * WARMING: y-coordinate will be rounded down automatically in a result of casting to int.
+     * @param x x-coordinate of top-left corner.
+     */
+    public void setCoordinateX(int x) {
+        this.setCoordinates(x, this.getY());
+    }
+
+    /**
+     * Set y-coordinates in floating-point format (double).
      * @param y y-coordinate of top-left corner.
      */
     public void setCoordinateY(double y) {
-        this.setCoordinates(this.point.getY(), y);
+        this.setCoordinates(this.point.getX(), y);
+    }
+
+    /**
+     * Set y-coordinates in integer format (int).
+     * WARMING: x-coordinate will be rounded down automatically in a result of casting to int.
+     * @param y y-coordinate of top-left corner.
+     */
+    public void setCoordinateY(int y) {
+        this.setCoordinates(this.getY(), y);
     }
 
     /**
@@ -110,8 +129,10 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         if (this.image != null) {
             g.drawImage(
-                this.image, 0, 0, this.image.getWidth(null),
-                this.image.getHeight(null), this);
+                this.image, 0, 0,
+                this.image.getWidth(null),
+                this.image.getHeight(null),
+                this);
         }
     }
 
