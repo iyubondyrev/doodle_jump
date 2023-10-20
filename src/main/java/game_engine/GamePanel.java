@@ -105,7 +105,7 @@ public class GamePanel extends JPanel {
      * @param y y-coordinate of top-left corner.
      */
     public void setCoordinateY(int y) {
-        this.setCoordinates(this.getY(), y);
+        this.setCoordinates(this.getX(), y);
     }
 
     /**
