@@ -14,7 +14,7 @@ import game_engine.GameObject;
  * Class represents collection of gameObjects which are contained on one Jpanel.
  * GameObjects have the same class.
  */
-public class GameObjectCollection<T extends GameObject> extends JPanel {
+public abstract class GameObjectCollection<T extends GameObject> extends JPanel {
     private ArrayList<T> list;
 
     /**
@@ -33,6 +33,7 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
 
     /**
      * Add object in collection.
+     * Methods adds object in list and on JPanel.
      * @param obj gameObject.
      */
     public void addObj(T obj) {
@@ -42,9 +43,10 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Remove object from list.
+     * Remove object from collection.
+     * Method removes object from list and from JPanel.
      * @param obj obj whic is removed.
-     * @return boolean (true - object was removed, false - not).
+     * @return boolean (true - object was not found, false - not).
      */
     public boolean removeObj(T obj) {
         boolean isRemoved = false;
@@ -64,9 +66,10 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Remove object from list by index.
+     * Remove object from collection by index.
+     * Method removes object from list and from JPanel.
      * @param i index of object in list.
-     * @return boolean (true - object was removed, false - not).
+     * @return boolean (true - object was not found, false - not).
      */
     public boolean removeObj(int i) {
         boolean isRemoved = false;
@@ -89,7 +92,7 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Get length of object list.
+     * Get length of object-list.
      * @return length of list.
      */
     public int getCollectionSize() {
@@ -97,7 +100,8 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Remove all objects from list.
+     * Remove all objects from collection.
+     * Method removes all objects from list and JPanel.
      */
     public void clearCollection() {
         this.removeAll();
@@ -106,7 +110,7 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Update panel on which objects are located.
+     * Update JPanel.
      */
     private void update() {
         this.revalidate();
@@ -114,8 +118,8 @@ public class GameObjectCollection<T extends GameObject> extends JPanel {
     }
 
     /**
-     * Get object collection.
-     * @return object collection.
+     * Get object-list.
+     * @return object-list.
      */
     public ArrayList<T> getCollection() {
         return this.list;

@@ -5,15 +5,16 @@ import java.awt.event.WindowEvent;
 import java.awt.Image;
 
 import game_engine.GamePanel;
-
+import game_engine.Window;
 
 /**
  * Class represents game panel on which animation is taken place.
  * Actions in animation are defined in abstract method preAction and postAction.
  */
-public abstract class AnimationPanel extends GamePanel{
+public abstract class BaseGame extends GamePanel {
     private Thread thread;
     private boolean runAnimation;
+    private Window window;
 
     private final int NANOSECONDS_PER_SECOND = 1000000000;
     private final int MILLISECONDS_PER_SECOND = 1000000;
@@ -21,12 +22,24 @@ public abstract class AnimationPanel extends GamePanel{
     private final int FPS = 60;
     private final int TARGET_TIME = NANOSECONDS_PER_SECOND / FPS;
 
-    public AnimationPanel(Image image) {
+    public BaseGame(int width, int height, Image image) {
         super(image);
+
+        this.window = new Window(width, height);
+        this.window.add(this);
+    }
+
+    /**
+     * Get window.
+     * @return window.
+     */
+    public Window getWindow() {
+        return this.window;
     }
 
     /**
      * Get if animation is still running.
+     * 
      * @return boolean (true - animation is running, falce - not).
      */
     protected boolean isRunAnimation() {
@@ -36,7 +49,7 @@ public abstract class AnimationPanel extends GamePanel{
     /**
      * Interupt animation.
      */
-    protected void interupt() {
+    protected void interrupt() {
         this.runAnimation = false;
     }
 
@@ -63,6 +76,7 @@ public abstract class AnimationPanel extends GamePanel{
                     }
 
                     postAction();
+                    render();
                 }
             }
         });
@@ -81,7 +95,15 @@ public abstract class AnimationPanel extends GamePanel{
     protected abstract void postAction();
 
     /**
+     * Render game: update window, etc.
+     */
+    protected void render() {
+        this.window.validate();
+    }
+
+    /**
      * Stop animation for specific time in order to work with defined FPS.
+     * 
      * @param time time which animation is stopped.
      */
     private void sleep(long time) {

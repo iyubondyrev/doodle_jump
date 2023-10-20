@@ -1,11 +1,14 @@
 package physics;
 
+/**
+ * 2D-Vector.
+ */
 public class Vector {
     private double x;
     private double y;
 
     /**
-     * Contructor.
+     * Constructor.
      * @param x x-value.
      * @param y y-value.
      */
@@ -14,7 +17,20 @@ public class Vector {
         this.y = y;
     }
 
+    /**
+     * Constructor to create with values (0, 0).
+     */
     public Vector() {}
+
+    /**
+     * Set x-value and y-value in vector.
+     * @param x x-value.
+     * @param y y-value.
+     */
+    public void setValues(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public void setX(double x) {
         this.x = x;

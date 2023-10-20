@@ -7,7 +7,7 @@ import java.awt.Image;
 import physics.Point;
 
 
-public class GamePanel extends JPanel {
+public abstract class GamePanel extends JPanel {
     protected Image image;
     private Point<Double> point;
 

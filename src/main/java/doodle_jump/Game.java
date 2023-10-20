@@ -12,19 +12,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import doodle_jump.MainWindow;
 import physics.Vector;
 import utils.ImageUploader;
 import doodle_jump.Doodle;
 import doodle_jump.PlatformCollection;
-import game_engine.AnimationPanel;
+import game_engine.BaseGame;
 
 /**
  * Class represents game.
  */
-public class Game extends AnimationPanel {
-    private MainWindow window;
-
+public class Game extends BaseGame {
     private boolean flag = false;
 
     private Graphics2D g;
@@ -37,16 +34,19 @@ public class Game extends AnimationPanel {
     public static final int HEIGHT = 800;
     public static final int UP_LIMIT = 10;
 
+    public static final int LIMIT_OFFSET = 50;
+    public static final int X_LEFT_LIMIT = -LIMIT_OFFSET;
+    public static final int X_RIGHT_LIMIT = WIDTH + LIMIT_OFFSET;
+
     private static final Image BG_IMAGE = ImageUploader.upload("bg.png");
-    private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
+    // private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
+    private static final Vector GRAVITY_VECTOR = new Vector(0, 0.01);
 
     /**
      * Constructor.
      */
     public Game() {
-        super(BG_IMAGE);
-        this.window = new MainWindow(WIDTH, HEIGHT);
-        this.window.add(this);
+        super(WIDTH, HEIGHT, BG_IMAGE);
         this.addKeyListener(new DoodleGameKeyListener());
         this.setFocusable(true); // Make sure the panel is focusable
         this.requestFocusInWindow(); // Request focus on the panel
@@ -73,7 +73,7 @@ public class Game extends AnimationPanel {
      */
     protected void preAction() {
         // Gravity vector implies on doodle.
-        this.doodle.addAcceleration(GRAVITY_VECTOR);
+        this.doodle.addToSpeedVector(GRAVITY_VECTOR);
         // Doodle moves.
         this.doodle.move();
     }
@@ -103,6 +103,9 @@ public class Game extends AnimationPanel {
         this.add(this.platforms);
 
         this.platforms.genNewPlatforms();
+
+        // Set initial speed limit for doodle.
+        this.doodle.setSpeedVector(-6, -0.5);
     }
 
     /**

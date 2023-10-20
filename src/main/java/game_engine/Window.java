@@ -1,13 +1,10 @@
-package doodle_jump;
+package game_engine;
 
 import javax.swing.JFrame;
-import java.awt.event.WindowAdapter;
 
-import doodle_jump.Game;
+public class Window extends JFrame {
 
-public class MainWindow extends JFrame {
-
-    public MainWindow(int width, int height) {
+    public Window(int width, int height) {
         super();
         this.setSize(width, height);
         this.setResizable(false);
@@ -16,3 +13,4 @@ public class MainWindow extends JFrame {
         this.setVisible(true);
     }
 }
+
