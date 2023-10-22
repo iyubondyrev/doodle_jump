@@ -1,25 +1,19 @@
 package game_engine;
 
-import physics.Vector;
 
 import java.awt.Image;
+import java.awt.Rectangle;
+import physics.Vector;
 
 /**
  * Class represents object with coordinates and image in game.
  */
-public abstract class GameObject extends GamePanel {
+public abstract class GameObject extends BaseElement {
     protected Vector speedVector;
     protected Vector boostVector;
 
-    // true if object teleports through walls, false - not
-    private boolean teleporting;
-    // the most left x-coordinate crossing which x-coordinate of object will be equal to xRightLimit
-    private double xLeftLimit;
-    // the most right x-coordinate crossing which x-coordinate of object will be equal to xLeftLimit
-    private double xRightLimit;
-
     private static final double FALLING_SPEED_THRESHOLD = 0;
-    private static final double X_LIMIT_OFFSET = 2;
+    
 
     /**
      * Constructor.
@@ -33,9 +27,6 @@ public abstract class GameObject extends GamePanel {
     public GameObject(
         int x, int y, Image image, boolean teleporting, double xLeftLimit, double xRightLimit) {
         super(x, y, image);
-        this.teleporting = teleporting;
-        this.xLeftLimit = xLeftLimit;
-        this.xRightLimit = xRightLimit;
         this.speedVector = new Vector();
         this.boostVector = new Vector();
     }
@@ -46,22 +37,6 @@ public abstract class GameObject extends GamePanel {
 
     public GameObject(Image image) {
         this(0, 0, image, false, 0, 0);
-    }
-
-    /**
-     * Get of object can teleport through wall.
-     * @return boolean (true - object can teleport, false - not).
-     */
-    public boolean isTeleporting() {
-        return this.teleporting;
-    }
-
-    public double getXRightLimit() {
-        return this.xRightLimit;
-    }
-
-    public double getXLeftLimit() {
-        return this.xLeftLimit;
     }
 
     /**
@@ -179,16 +154,21 @@ public abstract class GameObject extends GamePanel {
      * When it crosses xRightLimit, x-coordinate is equal to xLeftLimit.
      */
     public void move() {
-        double xCoordinate = this.getCoordinateX() + this.speedVector.getX();
-        double yCoordinate = this.getCoordinateY() + this.speedVector.getY();
+        double x = this.getCoordinateX() + this.getSpeedVector().getX();
+        double y = this.getCoordinateY() + this.getSpeedVector().getY();
 
-        if (this.teleporting) {
-            if (xCoordinate < this.xLeftLimit) {
-                xCoordinate = this.xRightLimit - (this.xLeftLimit - xCoordinate + X_LIMIT_OFFSET);
-            } else if (this.xRightLimit < xCoordinate) {
-                xCoordinate = this.xLeftLimit + (xCoordinate - this.xRightLimit + X_LIMIT_OFFSET);
-            }
-        }
-        this.setCoordinates(xCoordinate, yCoordinate);
+        this.setCoordinates(x, y);
+
+        this.speedVector.add(this.boostVector);
     }
+
+    @Override
+    protected void actionBegin() {
+        move();
+    }
+
+    @Override
+    protected void actionEnd() {}
+
+    public abstract Rectangle getRectangle();
 }

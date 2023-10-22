@@ -1,33 +1,20 @@
 package doodle_jump;
 
+import game_engine.BaseElement;
+import game_engine.Window;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import physics.Vector;
 import utils.ImageUploader;
-import doodle_jump.MainCharacter;
-import doodle_jump.PlatformCollection;
-import game_engine.BaseGame;
+
 
 /**
  * Class represents game.
  */
-public class Game extends BaseGame {
-    private boolean flag = false;
+public class Game extends BaseElement {
+    private Window window;
 
-    private Graphics2D g;
-
-    private int scores;
     private MainCharacter doodle;
     private PlatformCollection platforms;
 
@@ -46,7 +33,9 @@ public class Game extends BaseGame {
      * Constructor.
      */
     public Game() {
-        super(WIDTH, HEIGHT, BG_IMAGE);
+        super(BG_IMAGE);
+        this.window = new Window(WIDTH, HEIGHT);
+        this.window.add(this);
         this.addKeyListener(new MovingDoodleKeyListener());
         this.setFocusable(true); // Make sure the panel is focusable
         this.requestFocusInWindow(); // Request focus on the panel
@@ -67,7 +56,7 @@ public class Game extends BaseGame {
         this.runAnimation();
     }
 
-    private void gameOver() {
+    private void endGame() {
         this.doodle.totalStop();
         this.removeAll();
         this.playGame();
@@ -78,20 +67,20 @@ public class Game extends BaseGame {
     /**
      * Main action of game.
      */
-    protected void preAction() {
+    protected void actionBegin() {
         if (doodle.getY() > getHeight()) {
-            gameOver();
+            endGame();
         } else {
-            double x = doodle.getSpeedVector().getX();
-            if (Math.abs(x) < 0.1) {
-                doodle.getSpeedVector().x = 0;
-            } else {
-                double friction = Math.abs(x) * 0.02; // TODO fix this constant
-                if (x > 0) {
-                    doodle.getSpeedVector().x = (x - friction);
-                } else if (x < 0) {
-                    doodle.getSpeedVector().x = (x + friction);
+            double speedX = doodle.getSpeedVector().getX();
+            if (Math.abs(speedX) > 0.1) {
+                double resistance = Math.abs(speedX) * 0.02;
+                if (speedX > 0) {
+                    doodle.getSpeedVector().x = (speedX - resistance);
+                } else if (speedX < 0) {
+                    doodle.getSpeedVector().x = (speedX + resistance);
                 }
+            } else {
+                doodle.getSpeedVector().x = 0;
             }
 
             /* if (doodle.getSpeedVector().x > Doodle.MOVING_VECTOR.x) {
@@ -108,21 +97,14 @@ public class Game extends BaseGame {
             }
 
             for (Platform p : this.platforms.list) {
-                System.out.println("Y of speed vector; ");
-                System.out.println(doodle.getSpeedVector().y);
-                System.out.println("Feets of doodle: ");
-                System.out.println(doodle.getFeet());
-                System.out.println("Base: ");
-                System.out.println(p.getBase());
-                System.out.println("Intersect: ");
-                System.out.println(doodle.getFeet().intersects(p.getBase()));
-                if (doodle.getSpeedVector().y > 0 && doodle.getFeet().intersects(p.getBase())) {
+                if (doodle.getSpeedVector().y > 0 
+                    && doodle.getRectangle().intersects(p.getRectangle())) {
                     doodle.setCoordinateY((int) p.getBounds().getY() - doodle.getHeight());
                     doodle.jump();
                 }
             }
 
-            this.platforms.moveStageUp(this.doodle);
+            this.platforms.movePlatforms(this.doodle);
         }
     }
 
@@ -130,7 +112,8 @@ public class Game extends BaseGame {
     /**
      * Render game.
      */
-    protected void postAction() {
+    protected void actionEnd() {
+        this.window.validate();
     }
     
     /**
@@ -140,15 +123,14 @@ public class Game extends BaseGame {
     private void initGame() {
         this.doodle = new MainCharacter(100, 100);
         this.platforms = new PlatformCollection();
-        this.scores = 0;
 
         this.add(this.doodle);
         this.add(this.platforms);
+        this.animatedElements.add(this.doodle);
 
         this.platforms.genNewPlatforms();
 
         this.doodle.setBoostVector(GRAVITY_VECTOR);
-        this.doodle.startAnimation();
     }
 
     /**

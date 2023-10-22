@@ -1,14 +1,12 @@
 package doodle_jump;
 
-import utils.ImageUploader;
-
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
 
 import game_engine.GameObject;
 import game_engine.GameObjectCollection;
-import doodle_jump.Game;
+import java.awt.Image;
+import java.awt.Rectangle;
+import utils.ImageUploader;
+
 
 class Platform extends GameObject {
     private static final Image IMAGE = ImageUploader.upload("platform.png");
@@ -21,7 +19,8 @@ class Platform extends GameObject {
         super(0, 0, IMAGE);
     }
 
-    public Rectangle getBase(){
+    @Override
+    public Rectangle getRectangle(){
         return new Rectangle(getX(), getY(), getWidth(), 2);
     }
 }
@@ -38,25 +37,24 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
     public void genNewPlatforms() {
         for (int i = 0; i < 10; i++) {
             Platform p = new Platform();
-            int x = (int) (Math.random() * (getWidth() - p.getWidth()));
-            int y = i * ((int) (Math.random() * 50) + 70);
+            double x = Math.random() * (getWidth() - p.getWidth());
+            double y = i * ((Math.random() * 50) + 70);
             p.setCoordinates(x, y);
             this.addObj(p);
         }
 
     }
 
-    private static final int STAGE_SCROLL_LIMIT = 300;
-
-    public void moveStageUp(MainCharacter doodle) {
-        if (doodle.getY() < STAGE_SCROLL_LIMIT) {
-            int offset = STAGE_SCROLL_LIMIT - doodle.getY();
-            doodle.setCoordinateY(STAGE_SCROLL_LIMIT);
-            for (Platform p : this.list) {
-                p.setLocation(p.getX(), p.getY() + offset);
-                if (p.getY() > this.getHeight()) {
-                    p.setLocation((int) (Math.random() * (getWidth() - p.getWidth())),
-                            ((int) (Math.random() * 50) - 50));
+    public void movePlatforms(MainCharacter doodle) {
+        int stageMoveLimit = 300;
+        if (doodle.getY() < stageMoveLimit) {
+            int difference = stageMoveLimit - doodle.getY();
+            doodle.setCoordinateY(stageMoveLimit);
+            for (Platform platfrorm : this.list) {
+                platfrorm.setCoordinates(platfrorm.getX(), platfrorm.getY() + difference);
+                if (platfrorm.getY() > this.getHeight()) {
+                    platfrorm.setCoordinates(Math.random() * (getWidth() - platfrorm.getWidth()), 
+                        (Math.random() * 50) - 50);
                 }
             }
         }

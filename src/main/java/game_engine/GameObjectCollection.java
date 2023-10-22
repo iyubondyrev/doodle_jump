@@ -1,14 +1,9 @@
 package game_engine;
 
-import java.util.ArrayList;
 
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.image.ImageObserver;
 import java.awt.Component;
-
-import game_engine.GameObject;
+import java.util.ArrayList;
+import javax.swing.JPanel;
 
 /**
  * Class represents collection of gameObjects which are contained on one Jpanel.
