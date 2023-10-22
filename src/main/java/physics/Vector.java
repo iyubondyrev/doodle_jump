@@ -1,12 +1,11 @@
 package physics;
 
+import java.awt.geom.Point2D;
+
 /**
  * 2D-Vector.
  */
-public class Vector {
-    private double x;
-    private double y;
-
+public class Vector extends Point2D.Double {
     /**
      * Constructor.
      * @param x x-value.
@@ -20,32 +19,9 @@ public class Vector {
     /**
      * Constructor to create with values (0, 0).
      */
-    public Vector() {}
-
-    /**
-     * Set x-value and y-value in vector.
-     * @param x x-value.
-     * @param y y-value.
-     */
-    public void setValues(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getX() {
-        return this.x;
-    }
-
-    public double getY() {
-        return this.y;
+    public Vector() {
+        this.x = 0;
+        this.y = 0;
     }
 
     /**

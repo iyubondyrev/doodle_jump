@@ -15,7 +15,7 @@ import game_engine.GameObject;
  * GameObjects have the same class.
  */
 public abstract class GameObjectCollection<T extends GameObject> extends JPanel {
-    private ArrayList<T> list;
+    public ArrayList<T> list;
 
     /**
      * Constructor.

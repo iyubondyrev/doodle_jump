@@ -3,13 +3,12 @@ package game_engine;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Image;
-
-import physics.Point;
+import java.awt.geom.Point2D;
 
 
 public abstract class GamePanel extends JPanel {
     protected Image image;
-    private Point<Double> point;
+    protected Point2D.Double coordinates;
 
     /**
      * Constructor.
@@ -24,7 +23,7 @@ public abstract class GamePanel extends JPanel {
         this.image = image;
         this.setSize(this.image.getWidth(null), this.image.getHeight(null));
 
-        this.point = new Point<Double>();
+        this.coordinates = new Point2D.Double();
         this.setCoordinates(x, y);
     }
 
@@ -60,7 +59,7 @@ public abstract class GamePanel extends JPanel {
      */
     public void setCoordinates(double x, double y) {
         this.setLocation((int) x, (int) y);
-        this.point.setCoordinates(x, y);
+        this.coordinates.setLocation(x, y);
     }
 
     /**
@@ -71,7 +70,7 @@ public abstract class GamePanel extends JPanel {
      */
     public void setCoordinates(int x, int y) {
         this.setLocation(x, y);
-        this.point.setCoordinates((double) x, (double) y);
+        this.coordinates.setLocation((double) x, (double) y);
     }
 
     /**
@@ -79,7 +78,7 @@ public abstract class GamePanel extends JPanel {
      * @param x x-coordinate of top-left corner.
      */
     public void setCoordinateX(double x) {
-        this.setCoordinates(x, this.point.getY());
+        this.setCoordinates(x, this.coordinates.getY());
     }
 
     /**
@@ -96,7 +95,7 @@ public abstract class GamePanel extends JPanel {
      * @param y y-coordinate of top-left corner.
      */
     public void setCoordinateY(double y) {
-        this.setCoordinates(this.point.getX(), y);
+        this.setCoordinates(this.coordinates.getX(), y);
     }
 
     /**
@@ -113,7 +112,7 @@ public abstract class GamePanel extends JPanel {
      * @return x-coordinate.
      */
     public double getCoordinateX() {
-        return this.point.getX();
+        return this.coordinates.getX();
     }
 
     /**
@@ -121,7 +120,7 @@ public abstract class GamePanel extends JPanel {
      * @return y-coordinate.
      */
     public double getCoordinateY() {
-        return this.point.getY();
+        return this.coordinates.getY();
     }
 
     @Override

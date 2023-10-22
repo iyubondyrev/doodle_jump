@@ -8,7 +8,8 @@ import java.awt.Image;
  * Class represents object with coordinates and image in game.
  */
 public abstract class GameObject extends GamePanel {
-    private Vector speedVector;
+    protected Vector speedVector;
+    protected Vector boostVector;
 
     // true if object teleports through walls, false - not
     private boolean teleporting;
@@ -36,6 +37,7 @@ public abstract class GameObject extends GamePanel {
         this.xLeftLimit = xLeftLimit;
         this.xRightLimit = xRightLimit;
         this.speedVector = new Vector();
+        this.boostVector = new Vector();
     }
 
     public GameObject(int x, int y, Image image) {
@@ -71,6 +73,33 @@ public abstract class GameObject extends GamePanel {
     }
 
     /**
+     * Get boost vector.
+     * @return boost vector.
+     */
+    public Vector getBoostVector() {
+        return this.speedVector;
+    }
+
+    public void setBoostVector(Vector vector) {
+        if (vector == null) {
+            vector = new Vector(0., 0.);
+        }
+        this.boostVector.setLocation(vector);
+    }
+
+    public void addToBoostVector(Vector vector) {
+        this.boostVector.add(vector);
+    }
+
+    public void subFromBoostVector(Vector vector) {
+        this.boostVector.subtract(vector);
+    }
+
+    public void multiplyBoostVector(double value) {
+        this.boostVector.multiply(value);
+    }
+
+    /**
      * Define if object is falling.
      * @return boolean (true if object is falling, false - not).
      */
@@ -83,7 +112,10 @@ public abstract class GameObject extends GamePanel {
      * @param vector speed-vector.
      */
     public void setSpeedVector(Vector vector) {
-        this.speedVector = vector;
+        if (vector == null) {
+            vector = new Vector(0., 0.);
+        }
+        this.speedVector.setLocation(vector);
     }
 
     /**
