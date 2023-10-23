@@ -1,6 +1,5 @@
 package game_engine;
 
-
 import java.awt.Image;
 import java.awt.Rectangle;
 import physics.Vector;
@@ -11,19 +10,20 @@ import physics.Vector;
 public abstract class GameObject extends BaseElement {
     protected Vector speedVector;
     protected Vector boostVector;
-    
 
     /**
      * Constructor.
-     * @param x x-coordinate of top-left corner.
-     * @param y y-coordinate of top-left cordner.
-     * @param image object image.
-     * @param teleporting boolean (true - object teleports throught walls, false - not)
-     * @param xLeftLimit the left limit for x-coordinate.
+     * 
+     * @param x           x-coordinate of top-left corner.
+     * @param y           y-coordinate of top-left cordner.
+     * @param image       object image.
+     * @param teleporting boolean (true - object teleports throught walls, false -
+     *                    not)
+     * @param xLeftLimit  the left limit for x-coordinate.
      * @param xRightLimit the right limit for x-coordinate.
      */
     public GameObject(
-        int x, int y, Image image, boolean teleporting, double xLeftLimit, double xRightLimit) {
+            int x, int y, Image image, boolean teleporting, double xLeftLimit, double xRightLimit) {
         super(x, y, image);
         this.speedVector = new Vector();
         this.boostVector = new Vector();
@@ -39,6 +39,7 @@ public abstract class GameObject extends BaseElement {
 
     /**
      * Set speed-vector.
+     * 
      * @param vector speed-vector.
      */
     public void setSpeedVector(Vector vector) {
@@ -51,6 +52,7 @@ public abstract class GameObject extends BaseElement {
 
     /**
      * Get speed vector.
+     * 
      * @return speed vector.
      */
     public Vector getSpeedVector() {
@@ -59,6 +61,7 @@ public abstract class GameObject extends BaseElement {
 
     /**
      * Set boost vector
+     * 
      * @param vector boost vector.
      */
     public void setBoostVector(Vector vector) {
@@ -68,9 +71,10 @@ public abstract class GameObject extends BaseElement {
 
         this.boostVector.setLocation(vector);
     }
-    
+
     /**
      * Get boost vector.
+     * 
      * @return boost vector.
      */
     public Vector getBoostVector() {
@@ -92,6 +96,7 @@ public abstract class GameObject extends BaseElement {
     /**
      * Add to speed-vector.
      * Method recieves vector.
+     * 
      * @param addingVector adding vector.
      */
     public void addToSpeedVector(Vector addingVector) {
@@ -101,6 +106,7 @@ public abstract class GameObject extends BaseElement {
     /**
      * Subtract from speed-vector.
      * Method receives vector.
+     * 
      * @param substractingVector subtracting vector.
      */
     public void subtractFromSpeedVector(Vector substractingVector) {
@@ -109,6 +115,7 @@ public abstract class GameObject extends BaseElement {
 
     /**
      * Multiply speed-vector by number.
+     * 
      * @param numb number.
      */
     public void multiplySpeedVector(double numb) {
@@ -124,17 +131,10 @@ public abstract class GameObject extends BaseElement {
         this.setCoordinates(x, y);
     }
 
-    @Override
-    protected void actionBegin() {
-        move();
-    }
-
-    @Override
-    protected void actionEnd() {}
-
     /**
      * Get rectangle which cover the whole object.
      * Rectangle is required to calculate collision.
+     * 
      * @return rectangle which is used to calculate collision.
      */
     public Rectangle getRectangle() {

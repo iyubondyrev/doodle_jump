@@ -1,6 +1,6 @@
 package doodle_jump;
 
-import game_engine.BaseElement;
+import game_engine.BaseGame;
 import game_engine.Window;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -8,13 +8,10 @@ import java.awt.event.KeyEvent;
 import physics.Vector;
 import utils.ImageUploader;
 
-
 /**
  * Class represents game.
  */
-public class Game extends BaseElement {
-    private Window window;
-
+public class Game extends BaseGame {
     private MainCharacter doodle;
     private PlatformCollection platforms;
 
@@ -33,12 +30,8 @@ public class Game extends BaseElement {
      * Constructor.
      */
     public Game() {
-        super(BG_IMAGE);
-        this.window = new Window(WIDTH, HEIGHT);
-        this.window.add(this);
+        super(WIDTH, HEIGHT, BG_IMAGE);
         this.addKeyListener(new MovingDoodleKeyListener());
-        this.setFocusable(true); // Make sure the panel is focusable
-        this.requestFocusInWindow(); // Request focus on the panel
     }
 
     /**
@@ -71,19 +64,9 @@ public class Game extends BaseElement {
         if (this.doodle.getY() > this.getHeight()) {
             endGame();
         } else {
-            Vector doodleSpeedVector = this.doodle.getSpeedVector();
-            if (Math.abs(doodleSpeedVector.x) > 0.1) {
-                double resistance = Math.abs(doodleSpeedVector.x) * 0.02;
-                doodleSpeedVector.x +=  Math.signum(doodleSpeedVector.x) * resistance;
-            } else {
-                doodleSpeedVector.x = 0;
-            }
-
-            this.doodle.setSpeedVector(doodleSpeedVector);
-
             for (Platform p : this.platforms.list) {
-                if (doodle.getSpeedVector().y > 0 
-                    && doodle.getRectangle().intersects(p.getRectangle())) {
+                if (doodle.getSpeedVector().y > 0
+                        && doodle.getRectangle().intersects(p.getRectangle())) {
                     // doodle.setCoordinateY((int) p.getBounds().getY() - doodle.getHeight());
                     doodle.jump();
                 }
@@ -99,9 +82,8 @@ public class Game extends BaseElement {
      * Render game.
      */
     protected void actionEnd() {
-        this.window.validate();
     }
-    
+
     /**
      * Init game.
      * Init all objects on panel and add them on panel.

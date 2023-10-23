@@ -10,16 +10,7 @@ public abstract class BaseElement extends JPanel {
     protected Image image;
     protected Point2D.Double coordinates;
     protected ArrayList<BaseElement> animatedElements;
-
-    protected Thread thread;
-    private boolean runAnimation;
-
-    private static final int NANOSECONDS_PER_SECOND = 1000000000;
-    private static final int MILLISECONDS_PER_SECOND = 1000000;
-
-    private static final int FPS = 60;
-    private static final int TARGET_TIME = NANOSECONDS_PER_SECOND / FPS;
-
+    
     /**
      * Constructor.
      * @param x x-coordinate of top-left corner.
@@ -146,82 +137,4 @@ public abstract class BaseElement extends JPanel {
                 this);
         }
     }
-
-    /**
-     * Get if animation is still running.
-     * 
-     * @return boolean (true - animation is running, falce - not).
-     */
-    protected boolean isRunAnimation() {
-        return this.runAnimation;
-    }
-
-    /**
-     * Interupt animation.
-     */
-    protected void stopAnimation() {
-        this.runAnimation = false;
-
-        for (BaseElement element: animatedElements) {
-            element.stopAnimation();
-        }
-    }
-
-    /**
-     * Run animation by creating animation thread and starting it.
-     * Subclasses can change plot of animation by defining abstract
-     * methods preAction and postAction.
-     */
-    protected void runAnimation() {
-        this.runAnimation = true;
-
-        for (BaseElement element: animatedElements) {
-            element.runAnimation();
-        }
-
-        this.thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (runAnimation) {
-                    actionBegin();
-
-                    long startTime = System.nanoTime();
-                    long time = System.nanoTime() - startTime;
-
-                    if (time < TARGET_TIME) {
-                        long sleepTime = (TARGET_TIME - time) / MILLISECONDS_PER_SECOND;
-                        sleep(sleepTime);
-                    }
-
-                    actionEnd();
-                }
-            }
-        });
-
-        this.thread.start();
-    }
-
-    /**
-     * Actions which are performed in the start of animation cycle.
-     */
-    protected abstract void actionBegin();
-
-    /**
-     * Actions which are performed in the end of animation cycle.
-     */
-    protected abstract void actionEnd();
-
-    /**
-     * Stop animation for specific time in order to work with defined FPS.
-     * 
-     * @param time time which animation is stopped.
-     */
-    private void sleep(long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
 }
