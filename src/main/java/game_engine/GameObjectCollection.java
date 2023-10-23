@@ -1,24 +1,30 @@
 package game_engine;
 
-
 import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 /**
  * Class represents collection of gameObjects which are contained on one Jpanel.
  * GameObjects have the same class.
  */
-public abstract class GameObjectCollection<T extends GameObject> extends JPanel {
-    public ArrayList<T> list;
+public abstract class GameObjectCollection<T extends GameObject> extends JLabel {
+    protected ArrayList<T> list;
 
     /**
      * Constructor.
-     * @param width width of screen.
+     * 
+     * @param width  width of screen.
      * @param height height of screen.
      */
     public GameObjectCollection(int width, int height) {
-        super(null);
+
+        // Super for JPanel
+        // super(null);
+
+        // Super for JLabel
+        super();
         this.setOpaque(false);
         this.setLocation(0, 0);
         this.setSize(width, height);
@@ -29,6 +35,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
     /**
      * Add object in collection.
      * Methods adds object in list and on JPanel.
+     * 
      * @param obj gameObject.
      */
     public void addObj(T obj) {
@@ -40,6 +47,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
     /**
      * Remove object from collection.
      * Method removes object from list and from JPanel.
+     * 
      * @param obj obj whic is removed.
      * @return boolean (true - object was not found, false - not).
      */
@@ -47,7 +55,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
         boolean isRemoved = false;
         Component[] componentList = this.getComponents();
 
-        for (Component component: componentList) {
+        for (Component component : componentList) {
             if (component == obj) {
                 this.list.remove(obj);
                 this.remove(component);
@@ -63,6 +71,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
     /**
      * Remove object from collection by index.
      * Method removes object from list and from JPanel.
+     * 
      * @param i index of object in list.
      * @return boolean (true - object was not found, false - not).
      */
@@ -79,6 +88,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
 
     /**
      * Get object from list.
+     * 
      * @param i index of object in list.
      * @return object.
      */
@@ -88,6 +98,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
 
     /**
      * Get length of object-list.
+     * 
      * @return length of list.
      */
     public int getCollectionSize() {
@@ -114,6 +125,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JPanel 
 
     /**
      * Get object-list.
+     * 
      * @return object-list.
      */
     public ArrayList<T> getCollection() {

@@ -1,15 +1,15 @@
 package doodle_jump;
 
-
 import game_engine.GameObject;
 import game_engine.GameObjectCollection;
 import java.awt.Image;
 import java.awt.Rectangle;
 import utils.ImageUploader;
 
-
 class Platform extends GameObject {
     private static final Image IMAGE = ImageUploader.upload("platform.png");
+
+    private static final int RECT_HEIGHT = 2;
 
     public Platform(int x, int y) {
         super(x, y, IMAGE);
@@ -20,40 +20,42 @@ class Platform extends GameObject {
     }
 
     @Override
-    public Rectangle getRectangle(){
-        return new Rectangle(getX(), getY(), getWidth(), 2);
+    public Rectangle getRectangle() {
+        return new Rectangle(this.getX(), this.getY(), this.getWidth(), RECT_HEIGHT);
     }
 }
 
 public class PlatformCollection extends GameObjectCollection<Platform> {
+    public static final int STAGE_MOVE_LIMIT = 300;
+
+    private static final int INITIAL_PLATFORMS_NUMBER = 10;
+    private static final int Y_COORDINATE_OFFSET = 50;
 
     public PlatformCollection() {
         super(Game.WIDTH, Game.HEIGHT);
     }
 
     public void genNewPlatforms() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < INITIAL_PLATFORMS_NUMBER; i++) {
             Platform p = new Platform();
             double x = Math.random() * (getWidth() - p.getWidth());
             double y = i * ((Math.random() * 50) + 70);
             p.setCoordinates(x, y);
             this.addObj(p);
         }
-
     }
 
     public void movePlatforms(MainCharacter doodle) {
-        int stageMoveLimit = 300;
-        if (doodle.getY() < stageMoveLimit) {
-            int difference = stageMoveLimit - doodle.getY();
+        if (doodle.getY() < STAGE_MOVE_LIMIT) {
+            int difference = STAGE_MOVE_LIMIT - doodle.getY();
 
-            for (Platform platfrorm : this.list) {
-                platfrorm.setCoordinates(platfrorm.getX(), platfrorm.getY() + difference);
-                
-                if (platfrorm.getY() > this.getHeight()) {
-                    platfrorm.setCoordinates(
-                        Math.random() * (this.getWidth() - platfrorm.getWidth()),
-                        (Math.random() * 50) - 50);
+            for (Platform platform : this.list) {
+                platform.setCoordinates(platform.getX(), platform.getY() + difference);
+
+                if (platform.getY() > this.getHeight()) {
+                    platform.setCoordinates(
+                            Math.random() * (this.getWidth() - platform.getWidth()),
+                            (Math.random() * Y_COORDINATE_OFFSET) - Y_COORDINATE_OFFSET);
                 }
             }
         }

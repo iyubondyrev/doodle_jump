@@ -4,10 +4,11 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import physics.Vector;
 
+
 /**
  * Class represents object with coordinates and image in game.
  */
-public abstract class GameObject extends BaseElement {
+public abstract class GameObject extends BaseElement2 {
     protected Vector speedVector;
     protected Vector boostVector;
 
@@ -17,24 +18,15 @@ public abstract class GameObject extends BaseElement {
      * @param x           x-coordinate of top-left corner.
      * @param y           y-coordinate of top-left cordner.
      * @param image       object image.
-     * @param teleporting boolean (true - object teleports throught walls, false -
-     *                    not)
-     * @param xLeftLimit  the left limit for x-coordinate.
-     * @param xRightLimit the right limit for x-coordinate.
      */
-    public GameObject(
-            int x, int y, Image image, boolean teleporting, double xLeftLimit, double xRightLimit) {
+    public GameObject(int x, int y, Image image) {
         super(x, y, image);
         this.speedVector = new Vector();
         this.boostVector = new Vector();
     }
 
-    public GameObject(int x, int y, Image image) {
-        this(x, y, image, false, 0, 0);
-    }
-
     public GameObject(Image image) {
-        this(0, 0, image, false, 0, 0);
+        this(0, 0, image);
     }
 
     /**

@@ -4,7 +4,7 @@ import game_engine.BaseElement;
 import game_engine.Window;
 import java.awt.Image;
 
-public abstract class BaseGame extends BaseElement {
+public abstract class BaseGame extends BaseElement2 {
     private Thread thread;
     private boolean runAnimation;
     private Window window;
@@ -89,7 +89,7 @@ public abstract class BaseGame extends BaseElement {
      * Render image on window.
      */
     protected void render() {
-        this.window.validate();
+        // this.window.validate();
     }
 
     /**

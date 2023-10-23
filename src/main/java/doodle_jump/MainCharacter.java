@@ -1,25 +1,28 @@
 package doodle_jump;
 
-import game_engine.GameObject;
 import java.awt.Image;
 import java.awt.Rectangle;
+
+import game_engine.GameObject;
 import physics.Vector;
 import utils.ImageUploader;
 
 public class MainCharacter extends GameObject {
     private static final Image LEFT_IMAGE = ImageUploader.upload("doodleLeft.png");
     private static final Image RIGHT_IMAGE = ImageUploader.upload("doodleRight.png");
+    
     private static final Vector JUMP_VECTOR = new Vector(0., -13.);
     private static final Vector MOVING_VECTOR = new Vector(1., 0.);
 
-
+    private static final int TELEPORT_OFFSET = LEFT_IMAGE.getWidth(null) / 2;
     private static final double MAXIMAL_X_SPEED = 6.0;
     private static final double MAXIMAL_X_BOOST = 3.;
-    private static final double GAME_WIDTH = 500;
-    
+
+    private static final int RECT_HEIGHT = 15;
+    private static final int RECT_WIDTH = 55;
 
     public MainCharacter(int x, int y) {
-        super(x, y, RIGHT_IMAGE, true, Game.X_LEFT_LIMIT, Game.X_RIGHT_LIMIT);
+        super(x, y, LEFT_IMAGE);
     }
 
     public MainCharacter() {
@@ -34,40 +37,50 @@ public class MainCharacter extends GameObject {
         this.addToBoostVector(MOVING_VECTOR);
     }
 
+    public void jumpOnPlatforms(PlatformCollection platforms) {
+        for (Platform platform : platforms.getCollection()) {
+            if (this.getSpeedVector().y > 0 &&
+                    this.getRectangle().intersects(platform.getRectangle())) {
+                this.setCoordinateY(platform.getBounds().getY() - this.getHeight());
+                this.jump();
+            }
+        }
+    }
 
     public void move() {
-        this.correctBoostVector();
+        // this.correctBoostVector();
         this.speedVector.add(this.boostVector);
         this.correctSpeedVector();
 
-        int stageMoveLimit = 300;
-        if (this.getY() < stageMoveLimit) {
-            this.setCoordinateY(stageMoveLimit);
+        if (this.getY() < PlatformCollection.STAGE_MOVE_LIMIT) {
+            this.setCoordinateY(PlatformCollection.STAGE_MOVE_LIMIT);
         }
 
         super.move();
+        this.teleportThroughWall();
+    }
 
-        int halfDoodle = this.getWidth() / 2;
-        if (this.getX() < -halfDoodle) {
-            this.setCoordinateX(GAME_WIDTH - halfDoodle);
-        } else if (this.getX() > GAME_WIDTH - halfDoodle) {
-            this.setCoordinateX(-halfDoodle);
+    private void teleportThroughWall() {
+        if (this.getX() < -TELEPORT_OFFSET) {
+            this.setCoordinateX(Game.WIDTH - TELEPORT_OFFSET);
+        } else if (this.getX() > Game.WIDTH - TELEPORT_OFFSET) {
+            this.setCoordinateX(-TELEPORT_OFFSET);
         }
     }
 
     private void correctBoostVector() {
         if (Math.abs(this.boostVector.getX()) > MAXIMAL_X_BOOST) {
             this.boostVector.setLocation(
-                Math.signum(this.boostVector.getX()) * MAXIMAL_X_BOOST,
-                this.boostVector.getY());
+                    Math.signum(this.boostVector.getX()) * MAXIMAL_X_BOOST,
+                    this.boostVector.getY());
         }
     }
 
     private void correctSpeedVector() {
         if (Math.abs(this.speedVector.getX()) > MAXIMAL_X_SPEED) {
             this.speedVector.setLocation(
-                Math.signum(this.speedVector.getX()) * MAXIMAL_X_SPEED,
-                this.speedVector.getY());
+                    Math.signum(this.speedVector.getX()) * MAXIMAL_X_SPEED,
+                    this.speedVector.getY());
         }
     }
 
@@ -83,6 +96,7 @@ public class MainCharacter extends GameObject {
 
     @Override
     public Rectangle getRectangle() {
-        return new Rectangle(getX(), getY() + getHeight() - 15, 55, 15);
+        return new Rectangle(this.getX(), this.getY() + this.getHeight() - RECT_HEIGHT,
+        RECT_WIDTH, RECT_HEIGHT);
     }
 }

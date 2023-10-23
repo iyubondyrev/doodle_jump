@@ -1,7 +1,6 @@
 package doodle_jump;
 
 import game_engine.BaseGame;
-import game_engine.Window;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -18,10 +17,6 @@ public class Game extends BaseGame {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 800;
     public static final int UP_LIMIT = 100;
-
-    public static final int LIMIT_OFFSET = 50;
-    public static final int X_LEFT_LIMIT = -LIMIT_OFFSET;
-    public static final int X_RIGHT_LIMIT = WIDTH + LIMIT_OFFSET;
 
     private static final Image BG_IMAGE = ImageUploader.upload("bg.png");
     private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
@@ -62,27 +57,16 @@ public class Game extends BaseGame {
      */
     protected void actionBegin() {
         if (this.doodle.getY() > this.getHeight()) {
-            endGame();
+            this.endGame();
         } else {
-            for (Platform p : this.platforms.list) {
-                if (doodle.getSpeedVector().y > 0
-                        && doodle.getRectangle().intersects(p.getRectangle())) {
-                    // doodle.setCoordinateY((int) p.getBounds().getY() - doodle.getHeight());
-                    doodle.jump();
-                }
-            }
-
+            this.doodle.jumpOnPlatforms(this.platforms);
             this.platforms.movePlatforms(this.doodle);
             this.doodle.move();
         }
     }
 
     @Override
-    /**
-     * Render game.
-     */
-    protected void actionEnd() {
-    }
+    protected void actionEnd() {}
 
     /**
      * Init game.
@@ -94,7 +78,6 @@ public class Game extends BaseGame {
 
         this.add(this.doodle);
         this.add(this.platforms);
-        // this.animatedElements.add(this.doodle);
 
         this.platforms.genNewPlatforms();
 
@@ -104,9 +87,7 @@ public class Game extends BaseGame {
     /**
      * Show screen with results.
      */
-    private void showResultScreen() {
-        System.out.println("Game is over");
-    }
+    private void showResultScreen() {}
 
     /**
      * Show start screen, play game and show results.
@@ -115,7 +96,7 @@ public class Game extends BaseGame {
     public void play() {
         this.showStartScreen();
         this.playGame();
-        // this.showResultScreen();
+        this.showResultScreen();
     }
 
     private class MovingDoodleKeyListener extends KeyAdapter {
