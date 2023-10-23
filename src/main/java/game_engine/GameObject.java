@@ -11,8 +11,6 @@ import physics.Vector;
 public abstract class GameObject extends BaseElement {
     protected Vector speedVector;
     protected Vector boostVector;
-
-    private static final double FALLING_SPEED_THRESHOLD = 0;
     
 
     /**
@@ -40,6 +38,18 @@ public abstract class GameObject extends BaseElement {
     }
 
     /**
+     * Set speed-vector.
+     * @param vector speed-vector.
+     */
+    public void setSpeedVector(Vector vector) {
+        if (vector == null) {
+            vector = new Vector(0., 0.);
+        }
+
+        this.speedVector.setLocation(vector);
+    }
+
+    /**
      * Get speed vector.
      * @return speed vector.
      */
@@ -48,58 +58,35 @@ public abstract class GameObject extends BaseElement {
     }
 
     /**
-     * Get boost vector.
-     * @return boost vector.
+     * Set boost vector
+     * @param vector boost vector.
      */
-    public Vector getBoostVector() {
-        return this.speedVector;
-    }
-
     public void setBoostVector(Vector vector) {
         if (vector == null) {
             vector = new Vector(0., 0.);
         }
+
         this.boostVector.setLocation(vector);
+    }
+    
+    /**
+     * Get boost vector.
+     * @return boost vector.
+     */
+    public Vector getBoostVector() {
+        return this.boostVector;
     }
 
     public void addToBoostVector(Vector vector) {
         this.boostVector.add(vector);
     }
 
-    public void subFromBoostVector(Vector vector) {
+    public void subtractFromBoostVector(Vector vector) {
         this.boostVector.subtract(vector);
     }
 
     public void multiplyBoostVector(double value) {
         this.boostVector.multiply(value);
-    }
-
-    /**
-     * Define if object is falling.
-     * @return boolean (true if object is falling, false - not).
-     */
-    public boolean isFalling() {
-        return this.speedVector.getY() > FALLING_SPEED_THRESHOLD;
-    }
-    
-    /**
-     * Set speed-vector.
-     * @param vector speed-vector.
-     */
-    public void setSpeedVector(Vector vector) {
-        if (vector == null) {
-            vector = new Vector(0., 0.);
-        }
-        this.speedVector.setLocation(vector);
-    }
-
-    /**
-     * Set speed-vector.
-     * @param x x-value of speed-vector.
-     * @param y y-value of speed-vector.
-     */
-    public void setSpeedVector(double x, double y) {
-        this.setSpeedVector(new Vector(x, y));
     }
 
     /**
@@ -112,30 +99,12 @@ public abstract class GameObject extends BaseElement {
     }
 
     /**
-     * Add to speed-vector.
-     * @param x x-value.
-     * @param y y-value.
-     */
-    public void addToSpeedVector(double x, double y) {
-        this.addToSpeedVector(new Vector(x, y));
-    }
-
-    /**
      * Subtract from speed-vector.
      * Method receives vector.
      * @param substractingVector subtracting vector.
      */
     public void subtractFromSpeedVector(Vector substractingVector) {
         this.speedVector.subtract(substractingVector);
-    }
-
-    /**
-     * Subtract from speed-vector.
-     * @param x x-value.
-     * @param y y-value.
-     */
-    public void subtractFromSpeedVector(double x, double y) {
-        this.subtractFromSpeedVector(new Vector(x, y));
     }
 
     /**
@@ -148,18 +117,11 @@ public abstract class GameObject extends BaseElement {
 
     /**
      * Move object.
-     * 
-     * If object is teleporting:
-     * When it crosses xLeftLimit, x-coordinate is equal to xRightLimit.
-     * When it crosses xRightLimit, x-coordinate is equal to xLeftLimit.
      */
     public void move() {
         double x = this.getCoordinateX() + this.getSpeedVector().getX();
         double y = this.getCoordinateY() + this.getSpeedVector().getY();
-
         this.setCoordinates(x, y);
-
-        this.speedVector.add(this.boostVector);
     }
 
     @Override
@@ -170,5 +132,12 @@ public abstract class GameObject extends BaseElement {
     @Override
     protected void actionEnd() {}
 
-    public abstract Rectangle getRectangle();
+    /**
+     * Get rectangle which cover the whole object.
+     * Rectangle is required to calculate collision.
+     * @return rectangle which is used to calculate collision.
+     */
+    public Rectangle getRectangle() {
+        return new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+    }
 }

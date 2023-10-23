@@ -25,9 +25,6 @@ class Platform extends GameObject {
     }
 }
 
-/**
- * 
- */
 public class PlatformCollection extends GameObjectCollection<Platform> {
 
     public PlatformCollection() {
@@ -49,11 +46,13 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
         int stageMoveLimit = 300;
         if (doodle.getY() < stageMoveLimit) {
             int difference = stageMoveLimit - doodle.getY();
-            doodle.setCoordinateY(stageMoveLimit);
+
             for (Platform platfrorm : this.list) {
                 platfrorm.setCoordinates(platfrorm.getX(), platfrorm.getY() + difference);
+                
                 if (platfrorm.getY() > this.getHeight()) {
-                    platfrorm.setCoordinates(Math.random() * (getWidth() - platfrorm.getWidth()), 
+                    platfrorm.setCoordinates(
+                        Math.random() * (this.getWidth() - platfrorm.getWidth()),
                         (Math.random() * 50) - 50);
                 }
             }

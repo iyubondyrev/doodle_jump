@@ -11,14 +11,14 @@ public abstract class BaseElement extends JPanel {
     protected Point2D.Double coordinates;
     protected ArrayList<BaseElement> animatedElements;
 
-    private Thread thread;
+    protected Thread thread;
     private boolean runAnimation;
 
-    private final int NANOSECONDS_PER_SECOND = 1000000000;
-    private final int MILLISECONDS_PER_SECOND = 1000000;
+    private static final int NANOSECONDS_PER_SECOND = 1000000000;
+    private static final int MILLISECONDS_PER_SECOND = 1000000;
 
-    private final int FPS = 60;
-    private final int TARGET_TIME = NANOSECONDS_PER_SECOND / FPS;
+    private static final int FPS = 60;
+    private static final int TARGET_TIME = NANOSECONDS_PER_SECOND / FPS;
 
     /**
      * Constructor.
@@ -161,6 +161,10 @@ public abstract class BaseElement extends JPanel {
      */
     protected void stopAnimation() {
         this.runAnimation = false;
+
+        for (BaseElement element: animatedElements) {
+            element.stopAnimation();
+        }
     }
 
     /**
@@ -182,13 +186,12 @@ public abstract class BaseElement extends JPanel {
                     actionBegin();
 
                     long startTime = System.nanoTime();
-                    //long time = System.nanoTime() - startTime;
+                    long time = System.nanoTime() - startTime;
 
-                    /* if (time < TARGET_TIME) {
+                    if (time < TARGET_TIME) {
                         long sleepTime = (TARGET_TIME - time) / MILLISECONDS_PER_SECOND;
                         sleep(sleepTime);
-                    } */
-                    sleep(10);
+                    }
 
                     actionEnd();
                 }

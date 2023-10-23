@@ -59,8 +59,8 @@ public class Game extends BaseElement {
     private void endGame() {
         this.doodle.totalStop();
         this.removeAll();
-        this.playGame();
         this.repaint();
+        this.stopAnimation();
     }
 
     @Override
@@ -68,43 +68,29 @@ public class Game extends BaseElement {
      * Main action of game.
      */
     protected void actionBegin() {
-        if (doodle.getY() > getHeight()) {
+        if (this.doodle.getY() > this.getHeight()) {
             endGame();
         } else {
-            double speedX = doodle.getSpeedVector().getX();
-            if (Math.abs(speedX) > 0.1) {
-                double resistance = Math.abs(speedX) * 0.02;
-                if (speedX > 0) {
-                    doodle.getSpeedVector().x = (speedX - resistance);
-                } else if (speedX < 0) {
-                    doodle.getSpeedVector().x = (speedX + resistance);
-                }
+            Vector doodleSpeedVector = this.doodle.getSpeedVector();
+            if (Math.abs(doodleSpeedVector.x) > 0.1) {
+                double resistance = Math.abs(doodleSpeedVector.x) * 0.02;
+                doodleSpeedVector.x +=  Math.signum(doodleSpeedVector.x) * resistance;
             } else {
-                doodle.getSpeedVector().x = 0;
+                doodleSpeedVector.x = 0;
             }
 
-            /* if (doodle.getSpeedVector().x > Doodle.MOVING_VECTOR.x) {
-                doodle.turnRight();
-            } else if (doodle.getVelocity().x < -Doodle.MOVING_VECTOR.x) {
-                doodle.turnLeft();
-            } */
-
-            int halfDoodle = doodle.getWidth() / 2;
-            if (doodle.getX() < -halfDoodle) {
-                doodle.setCoordinateX(getWidth() - halfDoodle);
-            } else if (doodle.getX() > getWidth() - halfDoodle) {
-                doodle.setCoordinateX(-halfDoodle);
-            }
+            this.doodle.setSpeedVector(doodleSpeedVector);
 
             for (Platform p : this.platforms.list) {
                 if (doodle.getSpeedVector().y > 0 
                     && doodle.getRectangle().intersects(p.getRectangle())) {
-                    doodle.setCoordinateY((int) p.getBounds().getY() - doodle.getHeight());
+                    // doodle.setCoordinateY((int) p.getBounds().getY() - doodle.getHeight());
                     doodle.jump();
                 }
             }
 
             this.platforms.movePlatforms(this.doodle);
+            this.doodle.move();
         }
     }
 
@@ -126,7 +112,7 @@ public class Game extends BaseElement {
 
         this.add(this.doodle);
         this.add(this.platforms);
-        this.animatedElements.add(this.doodle);
+        // this.animatedElements.add(this.doodle);
 
         this.platforms.genNewPlatforms();
 
@@ -137,7 +123,7 @@ public class Game extends BaseElement {
      * Show screen with results.
      */
     private void showResultScreen() {
-
+        System.out.println("Game is over");
     }
 
     /**
@@ -147,7 +133,7 @@ public class Game extends BaseElement {
     public void play() {
         this.showStartScreen();
         this.playGame();
-        this.showResultScreen();
+        // this.showResultScreen();
     }
 
     private class MovingDoodleKeyListener extends KeyAdapter {
