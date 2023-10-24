@@ -1,12 +1,16 @@
 package game_engine;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.Point2D;
-import javax.swing.JPanel;
-import java.awt.Dimension;
 
-public abstract class BaseElement extends JPanel {
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+/**
+ * Base object with coordinates and image in game.
+ * Object sized are defined automatically based on image.
+ */
+public abstract class BaseElement extends JLabel {
     protected Image image;
     protected Point2D.Double coordinates;
 
@@ -17,12 +21,11 @@ public abstract class BaseElement extends JPanel {
      * @param image image.
      */
     public BaseElement(int x, int y, Image image) {
-        super(null);
+        super(new ImageIcon(image));
         this.setOpaque(false);
 
         this.image = image;
-        this.setSize(new Dimension(image.getWidth(null), image.getHeight(null)));
-        // this.setSize(image.getWidth(null), image.getHeight(null));
+        this.setSize(image.getWidth(null), image.getHeight(null));
 
         this.coordinates = new Point2D.Double();
         this.setCoordinates(x, y);
@@ -34,14 +37,6 @@ public abstract class BaseElement extends JPanel {
      */
     public BaseElement(Image image) {
         this(0, 0, image);
-    }
-    
-    /**
-     * Set image.
-     * @param image image.
-     */
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     /**
@@ -122,22 +117,5 @@ public abstract class BaseElement extends JPanel {
      */
     public double getCoordinateY() {
         return this.coordinates.getY();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (this.image != null) {
-            g.drawImage(
-                this.image, 0, 0,
-                // this.image.getWidth(null),
-                // this.image.getHeight(null),
-                this);
-            // g.drawImage(
-            //     this.image, 0, 0,
-            //     this.image.getWidth(null),
-            //     this.image.getHeight(null),
-            //     this);
-        }
     }
 }

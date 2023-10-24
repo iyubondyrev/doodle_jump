@@ -7,6 +7,9 @@ import game_engine.GameObject;
 import physics.Vector;
 import utils.ImageUploader;
 
+/**
+ * Doodle.
+ */
 public class MainCharacter extends GameObject {
     private static final Image LEFT_IMAGE = ImageUploader.upload("doodleLeft.png");
     private static final Image RIGHT_IMAGE = ImageUploader.upload("doodleRight.png");
@@ -41,7 +44,7 @@ public class MainCharacter extends GameObject {
         for (Platform platform : platforms.getCollection()) {
             if (this.getSpeedVector().y > 0 &&
                     this.getRectangle().intersects(platform.getRectangle())) {
-                this.setCoordinateY(platform.getBounds().getY() - this.getHeight());
+                // this.setCoordinateY(platform.getBounds().getY());
                 this.jump();
             }
         }

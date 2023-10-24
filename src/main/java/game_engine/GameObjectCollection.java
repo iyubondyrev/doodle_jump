@@ -2,14 +2,16 @@ package game_engine;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
+
+import doodle_jump.Game;
+import game_engine.BaseSurface;
+import game_engine.GameObject;
 
 /**
  * Class represents collection of gameObjects which are contained on one Jpanel.
  * GameObjects have the same class.
  */
-public abstract class GameObjectCollection<T extends GameObject> extends JLabel {
+public abstract class GameObjectCollection<T extends GameObject> extends BaseSurface {
     protected ArrayList<T> list;
 
     /**
@@ -19,16 +21,7 @@ public abstract class GameObjectCollection<T extends GameObject> extends JLabel 
      * @param height height of screen.
      */
     public GameObjectCollection(int width, int height) {
-
-        // Super for JPanel
-        // super(null);
-
-        // Super for JLabel
-        super();
-        this.setOpaque(false);
-        this.setLocation(0, 0);
-        this.setSize(width, height);
-
+        super(width, height);
         this.list = new ArrayList<T>();
     }
 

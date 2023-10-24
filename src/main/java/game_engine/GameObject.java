@@ -3,12 +3,12 @@ package game_engine;
 import java.awt.Image;
 import java.awt.Rectangle;
 import physics.Vector;
-
+import game_engine.BaseElement;
 
 /**
- * Class represents object with coordinates and image in game.
+ * Base object with coordinates, image, boost vector and speed vector in game.
  */
-public abstract class GameObject extends BaseElement2 {
+public abstract class GameObject extends BaseElement {
     protected Vector speedVector;
     protected Vector boostVector;
 
@@ -73,14 +73,29 @@ public abstract class GameObject extends BaseElement2 {
         return this.boostVector;
     }
 
+    /**
+     * Add to boost vector.
+     * 
+     * @param vector adding vector.
+     */
     public void addToBoostVector(Vector vector) {
         this.boostVector.add(vector);
     }
 
+    /**
+     * Subtract from boost vector.
+     * 
+     * @param vector subtracting vector.
+     */
     public void subtractFromBoostVector(Vector vector) {
         this.boostVector.subtract(vector);
     }
 
+    /**
+     * Multiply boost vector by number.
+     * 
+     * @param value number.
+     */
     public void multiplyBoostVector(double value) {
         this.boostVector.multiply(value);
     }

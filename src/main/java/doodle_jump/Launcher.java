@@ -11,7 +11,7 @@ public class Launcher {
             @Override
             public void run() {
                 Game game = new Game();
-                game.play();
+                game.exec();
             }
         });
     }

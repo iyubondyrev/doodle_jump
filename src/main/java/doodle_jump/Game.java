@@ -1,6 +1,7 @@
 package doodle_jump;
 
 import game_engine.BaseGame;
+import game_engine.BaseAnimation;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -29,74 +30,14 @@ public class Game extends BaseGame {
         this.addKeyListener(new MovingDoodleKeyListener());
     }
 
-    /**
-     * Show start scren.
-     */
-    private void showStartScreen() {
-
-    }
-
-    /**
-     * Play game.
-     */
-    private void playGame() {
-        this.initGame();
-        this.runAnimation();
-    }
-
-    private void endGame() {
-        this.doodle.totalStop();
-        this.removeAll();
-        this.repaint();
-        this.stopAnimation();
-    }
-
     @Override
-    /**
-     * Main action of game.
-     */
-    protected void actionBegin() {
-        if (this.doodle.getY() > this.getHeight()) {
-            this.endGame();
-        } else {
-            this.doodle.jumpOnPlatforms(this.platforms);
-            this.platforms.movePlatforms(this.doodle);
-            this.doodle.move();
-        }
-    }
+    protected void execGamePlot() {
+        new StartGame().exec();
+        new MainLevel().exec();
+        new FinalResult().exec();
 
-    @Override
-    protected void actionEnd() {}
-
-    /**
-     * Init game.
-     * Init all objects on panel and add them on panel.
-     */
-    private void initGame() {
-        this.doodle = new MainCharacter(100, 100);
-        this.platforms = new PlatformCollection();
-
-        this.add(this.doodle);
-        this.add(this.platforms);
-
-        this.platforms.genNewPlatforms();
-
-        this.doodle.setBoostVector(GRAVITY_VECTOR);
-    }
-
-    /**
-     * Show screen with results.
-     */
-    private void showResultScreen() {}
-
-    /**
-     * Show start screen, play game and show results.
-     * Main method of class.
-     */
-    public void play() {
-        this.showStartScreen();
-        this.playGame();
-        this.showResultScreen();
+        // Exit from program.
+        System.exit(0);
     }
 
     private class MovingDoodleKeyListener extends KeyAdapter {
@@ -122,6 +63,83 @@ public class Game extends BaseGame {
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && right) {
                 doodle.moveLeft();
             }
+        }
+    }
+
+    /**
+     * Start screen.
+     * Show button 'Start game'.
+     */
+    private class StartGame extends BaseAnimation {
+
+        @Override
+        protected void actionBegin() {
+            this.stopAnimation();
+        }
+
+        @Override
+        protected void render() {
+            window.validate();
+        }
+    }
+
+    /**
+     * Main level.
+     * Doodle jumps from one platform to another in order to reach the highest point.
+     */
+    private class MainLevel extends BaseAnimation {
+
+        @Override
+        protected void actionInit() {
+            doodle = new MainCharacter(100, 100);
+            platforms = new PlatformCollection();
+
+            add(doodle);
+            add(platforms);
+
+            platforms.genNewPlatforms();
+            doodle.setBoostVector(GRAVITY_VECTOR);
+        }
+
+        @Override
+        protected void actionBegin() {
+            if (doodle.getY() > getHeight()) {
+                this.stopAnimation();
+            } else {
+                doodle.jumpOnPlatforms(platforms);
+                platforms.movePlatforms(doodle);
+                doodle.move();
+            }
+        }
+
+        @Override
+        protected void actionClose() {
+            doodle.totalStop();
+            removeAll();
+            repaint();
+            stopAnimation();
+        }
+
+        @Override
+        protected void render() {
+            window.validate();
+        }
+    }
+
+    /**
+     * Final screen.
+     * Show results of user.
+     */
+    private class FinalResult extends BaseAnimation {
+
+        @Override
+        protected void actionBegin() {
+            this.stopAnimation();
+        }
+        
+        @Override
+        protected void render() {
+            window.validate();
         }
     }
 }
