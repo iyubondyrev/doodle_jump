@@ -25,7 +25,11 @@ public abstract class BaseGame extends BaseSurface {
         super(image);
         this.window = new Window(width, height);
         this.window.add(this);
+        this.returnFocus();
+        
+    }
 
+    public void returnFocus() {
         this.setFocusable(true); // Make sure the panel is focusable
         this.requestFocusInWindow(); // Request focus on the panel
     }

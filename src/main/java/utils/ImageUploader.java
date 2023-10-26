@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageUploader {
     
-    private static final String BASE_PATH = "src/main/java/images/";
+    private static final String BASE_PATH = "src/main/java/resourses/";
 
     public static BufferedImage upload(String fileName) {
         BufferedImage image;

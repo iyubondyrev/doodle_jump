@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import utils.ImageUploader;
 
 class Platform extends GameObject {
-    private static final Image IMAGE = ImageUploader.upload("platform.png");
+    private static final Image IMAGE = ImageUploader.upload("GreenPlatform.png");
 
     private static final int RECT_HEIGHT = 2;
 
@@ -26,7 +26,7 @@ class Platform extends GameObject {
 }
 
 public class PlatformCollection extends GameObjectCollection<Platform> {
-    public static final int STAGE_MOVE_LIMIT = 300;
+    public static final int MOVE_LIM = 300;
 
     private static final int INITIAL_PLATFORMS_NUMBER = 10;
     private static final int Y_COORDINATE_OFFSET = 50;
@@ -46,8 +46,9 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
     }
 
     public void movePlatforms(MainCharacter doodle) {
-        if (doodle.getY() < STAGE_MOVE_LIMIT) {
-            int difference = STAGE_MOVE_LIMIT - doodle.getY();
+        if (doodle.getY() < MOVE_LIM) {
+            int difference = MOVE_LIM - doodle.getY();
+            doodle.score += difference;
 
             for (Platform platform : this.list) {
                 platform.setCoordinates(platform.getX(), platform.getY() + difference);
