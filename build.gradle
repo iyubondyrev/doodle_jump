@@ -1,10 +1,16 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
 
-jar { 
+jar {
     manifest {
         attributes 'Main-Class': 'doodle_jump.Launcher'
-
     }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task runGame(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath 
+    main = 'doodle_jump.Launcher'
+    workingDir '.'
 }
