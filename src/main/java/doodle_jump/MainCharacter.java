@@ -20,6 +20,7 @@ public class MainCharacter extends GameObject {
 
     private static final int TELEPORT_OFFSET = LEFT_IMAGE.getWidth(null) / 2;
     private static final double MAXIMAL_X_SPEED = 6.0;
+    private static final double MAXIMAL_X_BOOST = 1.;
 
     private static final int RECT_HEIGHT = 15;
     private static final int RECT_WIDTH = 55;
@@ -79,7 +80,7 @@ public class MainCharacter extends GameObject {
     }
 
     public void move() {
-        // this.correctBoostVector();
+        this.correctBoostVector();
         this.speedVector.add(this.boostVector);
         this.correctSpeedVector();
 
@@ -104,6 +105,14 @@ public class MainCharacter extends GameObject {
             this.speedVector.setLocation(
                     Math.signum(this.speedVector.getX()) * MAXIMAL_X_SPEED,
                     this.speedVector.getY());
+        }
+    }
+
+    private void correctBoostVector() {
+        if (Math.abs(this.boostVector.getX()) > MAXIMAL_X_BOOST) {
+            this.boostVector.setLocation(
+                    Math.signum(this.boostVector.getX()) * MAXIMAL_X_BOOST,
+                    this.boostVector.getY());
         }
     }
 
