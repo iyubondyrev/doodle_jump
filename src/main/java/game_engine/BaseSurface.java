@@ -1,7 +1,7 @@
 package game_engine;
 
-import java.awt.Image;
 import java.awt.Graphics;
+import java.awt.Image;
 import javax.swing.JPanel;
 
 /**

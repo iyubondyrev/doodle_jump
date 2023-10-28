@@ -2,9 +2,6 @@ package game_engine;
 
 import java.awt.Image;
 
-import game_engine.Window;
-import game_engine.BaseSurface;
-
 /**
  * Base abstract class for game.
  * It contains thread in which game is run.
@@ -29,6 +26,9 @@ public abstract class BaseGame extends BaseSurface {
         
     }
 
+    /**
+     * Return focus to this window.
+     */
     public void returnFocus() {
         this.setFocusable(true); // Make sure the panel is focusable
         this.requestFocusInWindow(); // Request focus on the panel

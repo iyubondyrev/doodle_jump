@@ -6,9 +6,11 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import utils.ImageUploader;
 
+/**
+ * Platform.
+ */
 class Platform extends GameObject {
     private static final Image IMAGE = ImageUploader.upload("GreenPlatform.png");
-
     private static final int RECT_HEIGHT = 2;
 
     public Platform(int x, int y) {
@@ -25,6 +27,9 @@ class Platform extends GameObject {
     }
 }
 
+/**
+ * Class for convenient management of the platform set.
+ */
 public class PlatformCollection extends GameObjectCollection<Platform> {
     public static final int MOVE_LIM = 300;
 
@@ -35,6 +40,9 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
         super(Game.WIDTH, Game.HEIGHT);
     }
 
+    /**
+     * Generate initial set of platfroms.
+     */
     public void genNewPlatforms() {
         for (int i = 0; i < INITIAL_PLATFORMS_NUMBER; i++) {
             Platform p = new Platform();
@@ -45,6 +53,11 @@ public class PlatformCollection extends GameObjectCollection<Platform> {
         }
     }
 
+    /**
+     * Move platforms with respect to doodle.
+     * 
+     * @param doodle main character.
+     */
     public void movePlatforms(MainCharacter doodle) {
         if (doodle.getY() < MOVE_LIM) {
             int difference = MOVE_LIM - doodle.getY();

@@ -1,21 +1,19 @@
 package doodle_jump;
 
-import game_engine.BaseGame;
 import game_engine.BaseAnimation;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import game_engine.BaseGame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
-import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-
+import java.util.Scanner;
 import javax.swing.*;
-
 import physics.Vector;
 import utils.ImageUploader;
+
 
 /**
  * Class represents game.
@@ -32,14 +30,18 @@ public class Game extends BaseGame {
 
     private static final Image BG_IMAGE = ImageUploader.upload("GridBackground.png");
     private static final Vector GRAVITY_VECTOR = new Vector(0, 0.2);
-    private MovingDoodleKeyListener keyListener = new MovingDoodleKeyListener();
+    private MovingDoodleKeyListener moveKeyListener = new MovingDoodleKeyListener();
+    private EscListener escKeyListener = new EscListener();
+    private MainLevel mainGame;
+    private BaseAnimation initScreen;
 
     /**
      * Constructor.
      */
     public Game() {
         super(WIDTH, HEIGHT, BG_IMAGE);
-        this.addKeyListener(keyListener);
+        this.addKeyListener(moveKeyListener);
+        this.addKeyListener(escKeyListener);
         try {
             File myObj = new File(RECORD_FILE_PATH);
             if (myObj.createNewFile()) {
@@ -53,16 +55,31 @@ public class Game extends BaseGame {
         }
         
     }
-
+    
+    /**
+     * The main plot of game.
+     */
     @Override
     protected void execGamePlot() {
-        new InitialScreen().exec();
+        this.initScreen = new InitialScreen();
+        this.initScreen.exec();
         while (true) {
             this.returnFocus();
-            new MainLevel().exec();
-            new InitialScreen().exec();
+            this.mainGame = new MainLevel();
+            mainGame.exec();
+            this.initScreen = new InitialScreen();
+            this.initScreen.exec();
         }
         
+    }
+
+    private class EscListener extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                mainGame.stopAnimation();
+            }
+        }
     }
 
     private class MovingDoodleKeyListener extends KeyAdapter {
@@ -97,8 +114,8 @@ public class Game extends BaseGame {
     }
 
     /**
-     * Start screen.
-     * Show button 'Start game'.
+     * Initial screen.
+     * Show record of user, button 'start game' and 'quit'.
      */
     private class InitialScreen extends BaseAnimation {
 
@@ -222,12 +239,18 @@ public class Game extends BaseGame {
 
         @Override
         protected void actionClose() {
-            keyListener.left = false;
+            moveKeyListener.left = false;
             currentScore = doodle.score;
             try {
                 File myObj = new File(RECORD_FILE_PATH);
                 Scanner myReader = new Scanner(myObj);
-                int record = myReader.nextInt();
+                int record = 0;
+                try {
+                    record = myReader.nextInt();
+                } catch (Exception e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
                 if (currentScore > record) {
                     FileWriter myWriter = new FileWriter(RECORD_FILE_PATH);
                     myWriter.write(String.valueOf(currentScore));
@@ -244,23 +267,6 @@ public class Game extends BaseGame {
             stopAnimation();
         }
 
-        @Override
-        protected void render() {
-            window.validate();
-        }
-    }
-
-    /**
-     * Final screen.
-     * Show results of user.
-     */
-    private class FinalResult extends BaseAnimation {
-
-        @Override
-        protected void actionBegin() {
-            this.stopAnimation();
-        }
-        
         @Override
         protected void render() {
             window.validate();

@@ -30,7 +30,7 @@ public abstract class BaseAnimation {
     /**
      * Stop animation.
      */
-    protected void stopAnimation() {
+    public void stopAnimation() {
         this.runAnimation = false;
     }
 

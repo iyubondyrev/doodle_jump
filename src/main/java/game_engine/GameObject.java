@@ -3,7 +3,6 @@ package game_engine;
 import java.awt.Image;
 import java.awt.Rectangle;
 import physics.Vector;
-import game_engine.BaseElement;
 
 /**
  * Base object with coordinates, image, boost vector and speed vector in game.
@@ -52,7 +51,7 @@ public abstract class GameObject extends BaseElement {
     }
 
     /**
-     * Set boost vector
+     * Set boost vector.
      * 
      * @param vector boost vector.
      */

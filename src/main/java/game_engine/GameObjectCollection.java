@@ -3,10 +3,6 @@ package game_engine;
 import java.awt.Component;
 import java.util.ArrayList;
 
-import doodle_jump.Game;
-import game_engine.BaseSurface;
-import game_engine.GameObject;
-
 /**
  * Class represents collection of gameObjects which are contained on one Jpanel.
  * GameObjects have the same class.
