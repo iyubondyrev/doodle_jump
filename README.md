@@ -1,5 +1,9 @@
 # Doodle jump game
 
+### GitHub repo
+
+https://github.com/iyubondyrev/doodle_jump
+
 ### How to build and run
 
 Easy! Just do the following command in the main game (/doodle_jump) directory: 
