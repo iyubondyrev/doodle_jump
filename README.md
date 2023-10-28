@@ -8,10 +8,14 @@ https://github.com/iyubondyrev/doodle_jump
 
 Easy! Just do the following command in the main game (/doodle_jump) directory: 
 
-For MacOs/Linux:
+For MacOs:
 
 
-```./gradlew runGame```   
+```zsh gradlew runGame``` (sudo may be required)   
+
+For Linux:
+
+```bash gradlew runGame``` (sudo may be required) 
 
 For Windows:
 
